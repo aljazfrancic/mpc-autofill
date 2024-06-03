@@ -19,6 +19,7 @@ import { Export } from "@/features/export/export";
 import { FinishedMyProject } from "@/features/export/finishedMyProjectModal";
 import { FinishSettings } from "@/features/finishSettings/finishSettings";
 import { Import } from "@/features/import/import";
+import { ManageLocalFiles } from "@/features/localFiles/manageLocalFiles";
 import {
   selectIsProjectEmpty,
   selectProjectCardback,
@@ -97,6 +98,7 @@ function App() {
               <FinishSettings />
             </Row>
             <Row className="g-0 pt-2">
+              <ManageLocalFiles />
               <SearchSettings />
             </Row>
             <Row className="g-0 pt-2">

@@ -5,6 +5,7 @@ import { MemoizedCardDetailedView } from "@/features/cardDetailedView/cardDetail
 import { ChangeQueryModal } from "@/features/changeQuery/changeQueryModal";
 import { FinishedMyProjectModal } from "@/features/export/finishedMyProjectModal";
 import { InvalidIdentifiersModal } from "@/features/invalidIdentifiers/invalidIdentifiersModal";
+import { ManageLocalFilesModal } from "@/features/localFiles/manageLocalFiles";
 import {
   hideModal,
   selectModalCard,
@@ -62,6 +63,10 @@ export function Modals() {
       />
       <InvalidIdentifiersModal
         show={shownModal === "invalidIdentifiers"}
+        handleClose={handleClose}
+      />
+      <ManageLocalFilesModal
+        show={shownModal === "manageLocalFiles"}
         handleClose={handleClose}
       />
     </>

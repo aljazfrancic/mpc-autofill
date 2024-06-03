@@ -79,7 +79,7 @@ export function SupportBackendModal({
                     patron.tier,
                     patron.date,
                   ])}
-                  centred={true}
+                  alignment={"left"}
                   hover={true}
                   uniformWidth={false}
                 />
