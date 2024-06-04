@@ -437,6 +437,8 @@ export function EditorCard({
    * (to minimise the quantity of data stored in Elasticsearch), so the full `CardDocument` items must be looked up.
    */
 
+  // TODO: we should bin this component.
+
   //# region queries and hooks
 
   const maybeCardDocument = useAppSelector((state: RootState) =>

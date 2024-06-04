@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import Fuse from "fuse.js";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import type { AppDispatch, RootState } from "@/app/store";
@@ -273,3 +274,13 @@ export interface Tag {
 export type CSVRow = {
   [column in CSVHeaders]?: string;
 };
+
+export interface DirectoryIndex {
+  handle: FileSystemDirectoryHandle;
+  index:
+    | {
+        fuse: Fuse<CardDocument>;
+        size: number;
+      }
+    | undefined;
+}

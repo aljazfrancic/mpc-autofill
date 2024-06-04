@@ -9,6 +9,7 @@
 import React, { memo, useState } from "react";
 import Button from "react-bootstrap/Button";
 
+import { RootState } from "@/app/store";
 import {
   Faces,
   SearchQuery,
@@ -16,9 +17,10 @@ import {
   useAppSelector,
 } from "@/common/types";
 import { wrapIndex } from "@/common/utils";
-import { MemoizedEditorCard } from "@/features/card/card";
+import { Card, MemoizedEditorCard } from "@/features/card/card";
 import { selectCardbacks } from "@/features/card/cardbackSlice";
 import { GridSelectorModal } from "@/features/gridSelector/gridSelectorModal";
+import { useLocalFilesContext } from "@/features/localFiles/localFilesContext";
 import { setSelectedSlotsAndShowModal } from "@/features/modals/modalsSlice";
 import {
   bulkAlignMemberSelection,
@@ -30,6 +32,7 @@ import {
   setSelectedImages,
   toggleMemberSelection,
 } from "@/features/project/projectSlice";
+import { selectCardDocumentByIdentifier } from "@/features/search/cardDocumentsSlice";
 import { selectSearchResultsForQueryOrDefault } from "@/features/search/searchResultsSlice";
 
 interface CardSlotProps {
@@ -108,6 +111,14 @@ export function CardSlot({ searchQuery, face, slot }: CardSlotProps) {
   const slotsToModify: Array<[Faces, number]> = modifySelectedSlots
     ? selectedSlots
     : [[face, slot]];
+
+  const [directoryIndexes, setDirectoryIndexes] = useLocalFilesContext();
+  const localResults = directoryIndexes.flatMap((directoryIndex) =>
+    directoryIndex.index && searchQuery?.query
+      ? directoryIndex.index.fuse.search(searchQuery.query)
+      : []
+  );
+  // alert(JSON.stringify(localResults))
 
   //# endregion
 
@@ -255,12 +266,25 @@ export function CardSlot({ searchQuery, face, slot }: CardSlotProps) {
 
   //# endregion
 
+  // TODO: this is just a temporary hack for releasing some dopamine before i sign off for the night. remove later
+  const maybeCardDocument = useAppSelector((state: RootState) =>
+    localResults.length > 0
+      ? localResults[0].item
+      : selectCardDocumentByIdentifier(state, selectedImage)
+  );
+  const maybePreviousCardDocument = useAppSelector((state: RootState) =>
+    selectCardDocumentByIdentifier(state, previousImage)
+  );
+  const maybeNextCardDocument = useAppSelector((state: RootState) =>
+    selectCardDocumentByIdentifier(state, nextImage)
+  );
+
   return (
     <div data-testid={`${face}-slot${slot}`}>
-      <MemoizedEditorCard
-        imageIdentifier={selectedImage}
-        previousImageIdentifier={previousImage}
-        nextImageIdentifier={nextImage}
+      <Card
+        maybeCardDocument={maybeCardDocument}
+        maybePreviousCardDocument={maybePreviousCardDocument}
+        maybeNextCardDocument={maybeNextCardDocument}
         cardHeaderTitle={cardHeaderTitle}
         cardFooter={cardFooter}
         cardHeaderButtons={cardHeaderButtons}
