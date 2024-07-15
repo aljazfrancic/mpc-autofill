@@ -1,7 +1,6 @@
 import io
 import logging
 import os
-import sys
 import threading
 from pathlib import Path
 from typing import Any, Optional
@@ -124,7 +123,7 @@ def get_google_drive_file_name(drive_id: str) -> Optional[str]:
 # region file IO
 
 
-CURRDIR: str = os.path.dirname(os.path.realpath(sys.executable)) if getattr(sys, "frozen", False) else os.getcwd()
+CURRDIR: str = os.getcwd()
 
 
 def image_directory() -> str:
